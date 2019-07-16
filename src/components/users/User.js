@@ -2,10 +2,16 @@ import React, { useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
+import Repos from '../repos/Repos';
 
-const User = ({
-	getUser,
-	user: {
+const User = ({ getUser, user, match, loading, getUserRepos, repos }) => {
+	useEffect(() => {
+		getUser(match.params.login);
+		getUserRepos(match.params.login);
+		// eslint-disable-next-line
+	}, []);
+
+	const {
 		name,
 		avatar_url,
 		hireable,
@@ -19,13 +25,7 @@ const User = ({
 		following,
 		public_repos,
 		public_gist
-	},
-	match,
-	loading
-}) => {
-	useEffect(() => {
-		getUser(match.params.login);
-	}, [getUser, match.params.login]);
+	} = user;
 
 	return (
 		<Fragment>
@@ -36,7 +36,6 @@ const User = ({
 					<Link to="/" className="btn btn-light">
 						Back to list
 					</Link>
-					<img alt="" src={avatar_url} />
 					Hireble:{' '}
 					{hireable ? (
 						<i className="fas fas-check text-success" />
@@ -84,6 +83,13 @@ const User = ({
 							</ul>
 						</div>
 					</div>
+					<div className="card text-center">
+						<div className="badge badge-primary">Follower: {followers}</div>
+						<div className="badge badge-success">Following: {following}</div>
+						<div className="badge badge-white">Public repos: {public_repos}</div>
+						<div className="badge badge-dark">Public gist: {public_gist}</div>
+					</div>
+					{repos && <Repos repos={repos} />}
 				</Fragment>
 			)}
 		</Fragment>
@@ -93,7 +99,9 @@ const User = ({
 User.propTypes = {
 	getUser: PropTypes.func.isRequired,
 	loading: PropTypes.bool,
-	user: PropTypes.object.isRequired
+	user: PropTypes.object.isRequired,
+	getUserRepos: PropTypes.func.isRequired,
+	repos: PropTypes.array.isRequired
 };
 
 export default User;

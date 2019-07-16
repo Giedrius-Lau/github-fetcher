@@ -2,24 +2,19 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 const Search = ({ searchUsers, clearUsers, showClear, setAlert }) => {
-	const [formData, setFormData] = useState({ text: '' });
-
-	const { text } = formData;
+	const [text, setText] = useState('');
 
 	const onChange = e => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value
-		});
+		setText(e.target.value);
 	};
 
 	const onSubmit = async e => {
 		e.preventDefault();
 		if (text === '') {
-			setAlert(' Please enter something', 'light');
-			return;
+			return setAlert(' Please enter something', 'light');
 		}
 		searchUsers(text);
+		setText('');
 	};
 
 	return (
