@@ -59,30 +59,6 @@ const App = () => {
 		setLoading(false);
 	};
 
-	const searchUsers = async text => {
-		setLoading(true);
-
-		if (!text) {
-			const res = await axios.get(
-				`https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secre=${
-					process.env.REACT_APP_GITHUB_CLIENT_SECRET
-				}`
-			);
-
-			setUsers(res.data);
-			setLoading(false);
-		} else {
-			const res = await axios.get(
-				`https://api.github.com/search/users?q=${text}&client_id=${
-					process.env.REACT_APP_GITHUB_CLIENT_ID
-				}&client_secre=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
-			);
-
-			setUsers(res.data.items);
-			setLoading(false);
-		}
-	};
-
 	const showAlert = (msg, type) => {
 		setAlert({ msg, type });
 
@@ -108,7 +84,6 @@ const App = () => {
 								render={() => (
 									<Fragment>
 										<Search
-											searchUsers={searchUsers}
 											clearUsers={clearUsers}
 											showClear={users.length > 0 ? true : false}
 											setAlert={showAlert}
