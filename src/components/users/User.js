@@ -9,7 +9,7 @@ const User = ({ match }) => {
 	const { getUser, loading, user, getUserRepos, repos } = githubContext;
 	useEffect(() => {
 		getUser(match.params.login);
-		// getUserRepos(match.params.login);
+		getUserRepos(match.params.login);
 		// eslint-disable-next-line
 	}, []);
 
